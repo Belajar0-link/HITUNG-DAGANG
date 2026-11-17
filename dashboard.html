@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d2a1f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dagangan">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Catatan Dagangan</title>
+<link rel="stylesheet" href="style.css">
+<script>
+  if (!localStorage.getItem("dag_session") && !sessionStorage.getItem("dag_session")) {
+    location.replace("login.html");
+  }
+</script>
+</head>
+<body class="app">
+
+<header class="appbar">
+  <span class="brand">Catatan Dagangan</span>
+  <div class="akun">
+    <span>Halo, <strong id="nama"></strong></span>
+    <button class="btn out" id="keluar">Keluar</button>
+  </div>
+</header>
+
+<main class="isi">
+
+  <!-- ===== MENU 1: DASHBOARD ===== -->
+  <section id="v-dashboard">
+    <h1 class="judul">Dashboard</h1>
+
+    <!-- Pilihan periode -->
+    <div class="periode" id="periode">
+      <button class="chip aktif" data-periode="1">Hari ini</button>
+      <button class="chip" data-periode="2">Kemarin</button>
+      <button class="chip" data-periode="7">7 hari</button>
+      <button class="chip" data-periode="30">30 hari</button>
+    </div>
+
+    <!-- Ringkasan sesuai periode -->
+    <div class="stats ringkas">
+      <div class="stat utama">
+        <span>Pemasukan</span>
+        <strong id="st-jual">Rp0</strong>
+      </div>
+      <div class="stat merah">
+        <span>Pengeluaran</span>
+        <strong id="st-keluar">Rp0</strong>
+      </div>
+      <div class="stat laba">
+        <span>Laba Bersih</span>
+        <strong id="st-laba">Rp0</strong>
+      </div>
+    </div>
+
+    <section class="card">
+      <div class="kepala">
+        <h2>Pemasukan per hari</h2>
+        <div>
+          <button class="chip aktif" data-r="7">7 hari</button>
+          <button class="chip" data-r="30">30 hari</button>
+        </div>
+      </div>
+      <div class="chart" id="chart"></div>
+      <div class="tbl">
+        <table>
+          <tbody id="tabel"></tbody>
+          <tfoot id="kaki"></tfoot>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===== MENU 2: INPUT PEMASUKAN ===== -->
+  <section id="v-pemasukan" hidden>
+    <h1 class="judul">Input Pemasukan</h1>
+
+    <section class="card">
+      <h2>Catat penjualan</h2>
+      <form class="form" id="p-form" novalidate>
+        <div class="lebar">
+          <label for="p-tgl">Tanggal</label>
+          <input type="date" id="p-tgl">
+        </div>
+        <div class="lebar">
+          <label for="p-jml">Jumlah (Rp)</label>
+          <div class="input-uang">
+            <span class="prefix">Rp</span>
+            <input type="text" id="p-jml" inputmode="numeric" placeholder="0" autocomplete="off">
+          </div>
+        </div>
+        <div class="lebar">
+          <label for="p-ket">Keterangan <span class="opsional">(boleh kosong)</span></label>
+          <input id="p-ket" maxlength="60" placeholder="Contoh: nasi bungkus, baju, dll">
+        </div>
+        <button class="btn lebar">Simpan Pemasukan</button>
+      </form>
+      <p class="msg" id="p-msg" role="alert"></p>
+    </section>
+
+    <section class="card">
+      <h2>Pemasukan terbaru</h2>
+      <ul class="daftar" id="p-daftar"></ul>
+    </section>
+  </section>
+
+  <!-- ===== MENU 3: PENGELUARAN ===== -->
+  <section id="v-pengeluaran" hidden>
+    <h1 class="judul">Pengeluaran</h1>
+
+    <section class="card">
+      <h2>Catat pengeluaran</h2>
+      <form class="form" id="k-form" novalidate>
+        <div class="lebar">
+          <label for="k-tgl">Tanggal</label>
+          <input type="date" id="k-tgl">
+        </div>
+        <div class="lebar">
+          <label for="k-jml">Jumlah (Rp)</label>
+          <div class="input-uang">
+            <span class="prefix">Rp</span>
+            <input type="text" id="k-jml" inputmode="numeric" placeholder="0" autocomplete="off">
+          </div>
+        </div>
+        <div class="lebar">
+          <label for="k-ket">Keterangan <span class="opsional">(boleh kosong)</span></label>
+          <input id="k-ket" maxlength="60" placeholder="Contoh: beli bahan, transport, dll">
+        </div>
+        <button class="btn merah lebar">Simpan Pengeluaran</button>
+      </form>
+      <p class="msg" id="k-msg" role="alert"></p>
+    </section>
+
+    <section class="card">
+      <h2>Pengeluaran terbaru</h2>
+      <ul class="daftar" id="k-daftar"></ul>
+    </section>
+  </section>
+
+</main>
+
+<nav class="tabbar" aria-label="Menu utama">
+  <a id="nav-dashboard" href="#dashboard">
+    <svg viewBox="0 0 24 24"><path d="M5 20v-9M12 20V4M19 20v-6"/></svg>
+    <span>Dashboard</span>
+  </a>
+  <a id="nav-pemasukan" href="#pemasukan">
+    <svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+    <span>Pemasukan</span>
+  </a>
+  <a id="nav-pengeluaran" href="#pengeluaran">
+    <svg viewBox="0 0 24 24"><path d="M12 16V5m0 0-4 4m4-4 4 4M5 20h14"/></svg>
+    <span>Pengeluaran</span>
+  </a>
+</nav>
+
+<script src="dashboard.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    addEventListener("load", () => navigator.serviceWorker.register("sw.js"));
+  }
+</script>
+</body>
+</html>

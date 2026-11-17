@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d2a1f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dagangan">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Masuk | Catatan Dagangan</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="auth">
+<main class="auth-main">
+  <div class="judul-app">
+    <h1>Catatan Dagangan</h1>
+    <p class="muted">Catat pemasukan dagangan tiap hari.</p>
+  </div>
+  <div class="card">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tab-masuk" aria-selected="true">Masuk</button>
+      <button role="tab" id="tab-daftar" aria-selected="false">Daftar</button>
+    </div>
+
+    <form id="f-masuk" novalidate autocomplete="off">
+      <h2>Selamat datang kembali</h2>
+      <p class="muted">Masuk dengan akun yang sudah terdaftar.</p>
+      <label for="m-id">Nama pengguna atau Gmail</label>
+      <input id="m-id" autocomplete="off" required>
+      <label for="m-pass">Sandi</label>
+      <input id="m-pass" type="password" autocomplete="new-password" required>
+      <div class="kanan-link"><button type="button" class="linkbtn" id="ke-lupa">Lupa kata sandi?</button></div>
+      <label class="cek"><input type="checkbox" id="m-ingat"> Ingat saya di perangkat ini</label>
+      <div class="hint">Kosongkan di komputer umum. Anda akan otomatis keluar saat browser ditutup.</div>
+      <p class="msg" id="m-msg" role="alert"></p>
+      <button class="btn full" id="m-btn">Masuk</button>
+    </form>
+
+    <form id="f-daftar" novalidate hidden autocomplete="off">
+      <h2>Buat akun baru</h2>
+      <p class="muted">Daftar sekali, lalu langsung bisa mencatat.</p>
+      <label for="d-nama">Nama pengguna</label>
+      <input id="d-nama" autocomplete="off" required>
+      <div class="hint">3–20 karakter: huruf, angka, atau garis bawah.</div>
+      <label for="d-email">Gmail</label>
+      <input id="d-email" type="email" autocomplete="off" placeholder="nama@gmail.com" required>
+      <label for="d-pass">Sandi</label>
+      <input id="d-pass" type="password" autocomplete="new-password" required>
+      <div class="hint">Minimal 8 karakter, ada huruf dan angka.</div>
+      <p class="msg" id="d-msg" role="alert"></p>
+      <button class="btn full" id="d-btn">Daftar</button>
+    </form>
+
+    <div id="f-lupa" hidden>
+      <h2>Atur ulang sandi</h2>
+      <form id="l-kirim" novalidate autocomplete="off">
+        <p class="muted">Masukkan Gmail yang dipakai saat daftar. Kode 6 angka akan dikirim ke sana.</p>
+        <label for="l-email">Gmail</label>
+        <input id="l-email" type="email" autocomplete="off" placeholder="nama@gmail.com" required>
+        <p class="msg" id="l-msg1" role="alert"></p>
+        <button class="btn full" id="l-btn1">Kirim kode</button>
+      </form>
+      <form id="l-ubah" novalidate hidden autocomplete="off">
+        <p class="muted">Jika Gmail itu terdaftar, kode 6 angka sudah dikirim. Berlaku 10 menit. Cek juga folder Spam.</p>
+        <p class="uji" id="l-uji" hidden></p>
+        <label for="l-kode">Kode dari email</label>
+        <input id="l-kode" inputmode="numeric" maxlength="6" autocomplete="off" required>
+        <label for="l-baru">Sandi baru</label>
+        <input id="l-baru" type="password" autocomplete="new-password" required>
+        <div class="hint">Minimal 8 karakter, ada huruf dan angka.</div>
+        <p class="msg" id="l-msg2" role="alert"></p>
+        <button class="btn full" id="l-btn2">Ubah sandi</button>
+        <p class="kanan-link"><button type="button" class="linkbtn" id="l-ulang">Minta kode baru</button></p>
+      </form>
+      <p class="tengah"><button type="button" class="linkbtn" id="dari-lupa">Kembali ke halaman masuk</button></p>
+    </div>
+  </div>
+</main>
+<script src="login.js"></script>
+<script>if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js"));</script>
+</body>
+</html>
